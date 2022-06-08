@@ -1,0 +1,17 @@
+{
+  "name": "todolist",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "json-server --watch db.json --static ./"
+  },
+  "keywords": [],
+  "author": "Daniel de Campos Souza (danieldcsouza@gmail.com)",
+  "license": "ISC",
+  "devDependencies": {
+    "json-server": "^0.17.0"
+  },
+  "dependencies": {},
+  "description": ""
+}
