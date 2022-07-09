@@ -30,7 +30,7 @@ function generateLiTask(obj) {
     const inputEdit = document.createElement("input")
     inputEdit.setAttribute("type", "text")
     inputEdit.className = "editInput"
-    inputEdit.value = obj.name
+    inputEdit.value = obj.title
 
     containerEdit.appendChild(inputEdit)
     const containerEditButton = document.createElement("button")
