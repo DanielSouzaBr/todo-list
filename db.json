@@ -1,27 +1,11 @@
 {
   "tasks": [
     {
-      "title": "update",
-      "completed": false,
-      "createdAt": 1652649191105,
-      "updatedAt": 1657408226460,
-      "userId": "1",
-      "id": 1
-    },
-    {
-      "title": "new task",
-      "completed": false,
-      "createdAt": 1653404417957,
-      "updatedAt": null,
-      "userId": "1",
-      "id": 3
-    },
-    {
-      "title": "new task id",
-      "completed": false,
-      "createdAt": 1654542926302,
-      "updatedAt": null,
-      "id": 4,
+      "title": "Editada",
+      "completed": true,
+      "createdAt": 1657482928035,
+      "updatedAt": 1657482936569,
+      "id": 1,
       "userId": "1"
     }
   ],

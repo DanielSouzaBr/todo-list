@@ -1,4 +1,4 @@
-export function createXMLHttpRequest(method, url, cb, data = null) {
+export function createXMLHttpRequest(method, url, success, error, data = null) {
     const xhr = new XMLHttpRequest()
 
     xhr.open(method, url)
@@ -14,16 +14,12 @@ export function createXMLHttpRequest(method, url, cb, data = null) {
 
                 const json = JSON.parse(xhr.responseText)
 
-                if (typeof cb === "function") {
-                    cb(json)
+                if (typeof success === "function") {
+                    success(json)
                 }
 
-            } else if (typeof cb === "function") {
-                cb({
-                    error: true,
-                    status: xhr.status,
-                    message: "Algo de errado não está certo"
-                })
+            } else if (typeof error === "function") {
+                error("Algo de errado não está certo")
             }
         }
     }

@@ -1,4 +1,4 @@
-import { createXMLHttpRequest } from '../createXMLHttpRequest.js'
+import { createFetch } from '../createFetch.js'
 import { Task } from '../Model/Task.model.js'
 import { urlTasks, urlUsers } from '../config.js'
 
@@ -8,44 +8,48 @@ export default class TasksService {
         this.tasks = []
     }
 
-    add(task, cb, userId) {
-        const fn = (_task) => {
-            const { title, completed, createdAt, updatedAt } = _task
-            this.getTasks(userId, cb)
-        }
-
-        createXMLHttpRequest("POST", `${urlUsers}/${userId}/tasks`, fn, JSON.stringify(task))
-
+    add(task, cb, error, userId) {
+        createFetch("POST", `${urlUsers}/${userId}/tasks`, JSON.stringify(task))
+            .then(() => this.getTasks(userId))
+            .then(() => cb())
+            .catch(err => error(err))
     }
 
-    getTasks(userId, cb) {
+    getTasks(userId, success, error) {
 
         const fn = (arrTasks) => {
             this.tasks = arrTasks.map(task => {
                 const { title, completed, createdAt, updatedAt, id } = task
                 return new Task(title, completed, createdAt, updatedAt, id)
             })
-            if (typeof cb === "function") cb(this.tasks)
+            if (typeof success === "function") success(this.tasks)
+            return arrTasks
         }
-        createXMLHttpRequest("GET", `${urlUsers}/${userId}/tasks`, fn)
+        return createFetch("GET", `${urlUsers}/${userId}/tasks`)
+            .then(response => {
+                return fn(response)
+            })
+            .catch(erro => {
+                if (typeof error === "function") {
+                    return error(erro.message)
+                }
+                throw Error(erro.message)
+            })
     }
 
-    remove(id, cb, userId) {
-
-        const fn = () => {
-            this.getTasks(userId, cb)
-        }
-
-        createXMLHttpRequest("DELETE", `${urlTasks}/${id}`, fn)
+    remove(id, cb, error, userId) {
+        createFetch("DELETE", `${urlTasks}/${id}`)
+            .then(() => this.getTasks(userId))
+            .then(() => cb())
+            .catch(err => error(err.message))
     }
 
-    update(task, cb, userId) {
+    update(task, cb, error, userId) {
         task.updatedAt = Date.now()
-        const fn = () => {
-            this.getTasks(userId, cb)
-        }
-
-        createXMLHttpRequest("PATCH", `${urlTasks}/${task.id}`, fn, JSON.stringify(task))
+        createFetch("PATCH", `${urlTasks}/${task.id}`, JSON.stringify(task))
+            .then(() => this.getTasks(userId))
+            .then(() => cb())
+            .catch(err => error(err.message))
     }
 
     getById(id) {
